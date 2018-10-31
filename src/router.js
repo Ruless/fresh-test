@@ -14,8 +14,15 @@ const router = new Router({
             children: [
                 {
                     path: '',
-                    component: () => import('./components/Step1.vue'),
-                    
+                    component: () => import('./components/Step1.vue'), 
+                },
+                {
+                    path: 'step2',
+                    component: () => import('./components/Step2.vue'), 
+                },
+                {
+                    path: 'step3',
+                    component: () => import('./components/Step3.vue'), 
                 }
             ]
         },
