@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view />
+    <notifications position='bottom left' />
   </div>
 </template>
 
@@ -12,6 +13,7 @@ export default {
 </script>
 
 <style>
+@import '/assets/style/style.scss';
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

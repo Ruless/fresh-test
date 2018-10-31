@@ -5,15 +5,22 @@ Vue.use(Router)
 
 
 const router = new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-  {
-  	path: '',
-  	component: () => import('./components/HelloWorld.vue')
-  },
-  ]
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: [
+        {
+            path: '',
+            component: () => import('./pages/Main.vue'),
+            children: [
+                {
+                    path: '',
+                    component: () => import('./components/Step1.vue'),
+                    
+                }
+            ]
+        },
+    ]
 
-  })
+    })
 
 export default router;
