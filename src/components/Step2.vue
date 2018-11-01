@@ -14,32 +14,45 @@
         </div>
         <div class="form-grp">
             <label>Город</label>
-            <input type="text" v-model="city" @keydown="autocomplite">
+            <input type="text" v-model="city" @input="autocomplite">
+            <ul
+                v-show="isOpen"
+                class="autocomplete-results"
+            >
+                <li
+                    v-for="(item, i) in findArr"
+                    :key="i"
+                    class="autocomplete-result"
+                    @click="setResult(item)"
+                >
+                {{ item }}
+                </li>
+            </ul>
         </div>
-        {{ file }}
         <div class="btn" @click="nextStep"> Далее </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
-// let file = require('@/assets/koatuu.xml');
 
 export default {
     data() {
         return {
+            isOpen: false,
             idTetxt: '',
             surname: '',
             name: '',
             city: '',
-            file: file
+            cityArr: [],
+            findArr: []
         }
     },
     methods: {
         validation() {
 
-            if ( this.idTetxt == '' || this.surname == '' || this.name == '') {
-                
+            if ( this.idTetxt == '' || this.surname == '' || this.name == '' || this.city == '') {
+
                 this.$notify({
                     type: 'error',
                     text: "Поля не должны быть пустыми!",
@@ -63,16 +76,69 @@ export default {
             }
         },
         autocomplite() {
-
+            this.isOpen = true
+            this.findArr = this.cityArr.filter(item => item.toLowerCase().indexOf(this.city.toLowerCase()) > -1);
+        },
+        setResult(result) {
+            this.city = result;
+            this.isOpen = false;
         },
         nextStep() {
             this.validation()
+        },
+        clickOutside(evt) {
+            if (!this.$el.contains(evt.target)) {
+                this.isOpen = false;
+            }
         }
     },
     created() {
         axios.get('https://api.hh.ru/areas/5').then( (response) => {
-            console.log(response.data.areas)
+            response.data.areas.forEach( (element) => {
+                element.areas.forEach( (item) => {
+                    this.cityArr.push(item.name)
+                })
+            });
+
         })
+    },
+    mounted() {
+        document.addEventListener("click", this.clickOutside);
+    },
+    destroyed() {
+        document.removeEventListener("click", this.clickOutside);
     }
 }
 </script>
+
+
+<style lang="scss">
+
+    .autocomplete {
+        position: relative;
+        width: 130px;
+    }
+
+    .autocomplete-results {
+        padding: 0;
+        margin: 0;
+        border: 1px solid #eeeeee;
+        height: 120px;
+        overflow: auto;
+        width: 100%;
+    }
+
+    .autocomplete-result {
+    list-style: none;
+    text-align: left;
+    padding: 4px 2px;
+    cursor: pointer;
+    }
+
+    .autocomplete-result.is-active,
+    .autocomplete-result:hover {
+    background-color: #4aae9b;
+    color: white;
+    }
+
+</style>
