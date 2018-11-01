@@ -1,20 +1,21 @@
 <template>
-    <div> 
+    <div>
+        {{ step1 }}
         <div class="form-grp">
             <label>ИНН</label>
-            <input type="text" v-model="idTetxt" >
+            <input type="text" v-model="post.idTetxt" >
         </div>
         <div class="form-grp">
             <label>Фамилия</label>
-            <input type="text" v-model="surname" >
+            <input type="text" v-model="post.surname" >
         </div>
         <div class="form-grp">
             <label>Имя</label>
-            <input type="text" v-model="name" >
+            <input type="text" v-model="post.name" >
         </div>
         <div class="form-grp">
             <label>Город</label>
-            <input type="text" v-model="city" @input="autocomplite">
+            <input type="text" v-model="post.city" @input="autocomplite">
             <ul
                 v-show="isOpen"
                 class="autocomplete-results"
@@ -37,13 +38,17 @@
 import axios from 'axios'
 
 export default {
+    props: ['step1'],
     data() {
         return {
             isOpen: false,
-            idTetxt: '',
-            surname: '',
-            name: '',
-            city: '',
+            post: {
+
+                idTetxt: '',
+                surname: '',
+                name: '',
+                city: ''
+            },
             cityArr: [],
             findArr: []
         }
@@ -51,7 +56,7 @@ export default {
     methods: {
         validation() {
 
-            if ( this.idTetxt == '' || this.surname == '' || this.name == '' || this.city == '') {
+            if ( this.post.idTetxt == '' || this.post.surname == '' || this.post.name == '' || this.post.city == '') {
 
                 this.$notify({
                     type: 'error',
@@ -59,14 +64,14 @@ export default {
                     duration: 3000
                 });
 				return false
-            } else if ( this.idTetxt.length != 10 ) {
+            } else if ( this.post.idTetxt.length != 10 ) {
                 this.$notify({
                     type: 'error',
                     text: "Длинна поля ИНН должна быть 10 символов!",
                     duration: 3000
                 });
 				return false
-            } else if ( !Number(this.idTetxt) ) {
+            } else if ( !Number(this.post.idTetxt) ) {
                 this.$notify({
                     type: 'error',
                     text: "Поле ИНН должны содержать только числа!",
@@ -74,17 +79,23 @@ export default {
                 });
 				return false
             }
+
+            return true
         },
         autocomplite() {
-            this.isOpen = true
-            this.findArr = this.cityArr.filter(item => item.toLowerCase().indexOf(this.city.toLowerCase()) > -1);
+            this.findArr = this.cityArr.filter(item => item.toLowerCase().indexOf(this.post.city.toLowerCase()) > -1);
+            if ( this.findArr.length != 0 ) {
+                this.isOpen = true
+            }
         },
         setResult(result) {
-            this.city = result;
+            this.post.city = result;
             this.isOpen = false;
         },
         nextStep() {
-            this.validation()
+            if ( this.validation() ) {
+                this.$router.push({ name: 'step3', params: {step1: this.step1, step2: this.post} });
+            }
         },
         clickOutside(evt) {
             if (!this.$el.contains(evt.target)) {

@@ -2,11 +2,11 @@
     <div> 
         <div class="form-grp">
             <label>Сумма</label>
-            <input type="text" v-model="suma" >
+            <input type="text" v-model="post.suma" >
         </div>
         <div class="form-grp">
             <label>Срок</label>
-            <input type="text" v-model="term" >
+            <input type="text" v-model="post.term" >
         </div>
         
         <div class="btn" @click="nextStep"> Далее </div>
@@ -19,14 +19,17 @@
 export default {
     data() {
         return {
-            suma: '',
-            term: ''
+            post: {
+                suma: '',
+                term: ''
+            }
+
         }
     },
     methods: {
         validation() {
 
-            if ( this.suma == '' || this.term == '') {
+            if ( this.post.suma == '' || this.post.term == '') {
                 
                                 this.$notify({
                     type: 'error',
@@ -34,7 +37,7 @@ export default {
                     duration: 3000
                 });
 				return false
-            } else if ( !Number(this.suma) || !Number(this.term) ) {
+            } else if ( !Number(this.post.suma) || !Number(this.post.term) ) {
 
                 
                 this.$notify({
@@ -43,7 +46,7 @@ export default {
                     duration: 3000
                 });
 				return false
-            } else if ( this.suma.indexOf(".") > 0 ) {
+            } else if ( this.post.suma.indexOf(".") > 0 ) {
                 
                 this.$notify({
                     type: 'error',
@@ -52,7 +55,7 @@ export default {
                 });
 				return false
 				
-            } else if ( this.term.indexOf(".") > 0 ) {
+            } else if ( this.post.term.indexOf(".") > 0 ) {
 
                 this.$notify({
                     type: 'error',
@@ -60,7 +63,7 @@ export default {
                     duration: 3000
                 });
 				return false
-            } else if ( (this.suma < 1) || (this.suma > 10000) ) {
+            } else if ( (this.post.suma < 1) || (this.post.suma > 10000) ) {
 
                 this.$notify({
                     type: 'error',
@@ -68,7 +71,7 @@ export default {
                     duration: 3000
                 });
 				return false
-            } else if ( (this.term < 1) || (this.term > 12) ) {
+            } else if ( (this.post.term < 1) || (this.post.term > 12) ) {
 
                 
                 this.$notify({
@@ -78,9 +81,14 @@ export default {
                 });
 				return false
             }
+
+            return true
         },
         nextStep() {
-            this.validation()
+            if ( this.validation() ) {
+                console.log(" is valid ")
+                this.$router.push({ name: 'step2', params: {step1: this.post} });
+            }
         }
     }
 }
