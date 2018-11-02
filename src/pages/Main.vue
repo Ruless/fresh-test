@@ -1,16 +1,12 @@
 <template>
     <div class="simple-form">
         <div class="simple-form-header">
-            <div class="simple-form-header__item">Step 1</div>
-            <div class="simple-form-header__item">Step 2</div>
-            <div class="simple-form-header__item">Step 3</div>
-            <br>
-            <router-link tag="div" class="simple-form-header__item" to="/">Step 1</router-link>
-            <router-link tag="div" class="simple-form-header__item" to="/step2">Step 2</router-link>
-            <router-link tag="div" class="simple-form-header__item" to="/step3">Step 3</router-link>
+            <div class="simple-form-header__item" :class="[ idCurrent == 1 ? 'active' : '', idCurrent != 1 ? 'disable' : '']">Step 1</div>
+            <div class="simple-form-header__item" :class="[ idCurrent == 2 ? 'active' : '', idCurrent != 2 ? 'disable' : '']">Step 2</div>
+            <div class="simple-form-header__item" :class="[ idCurrent == 3 ? 'active' : '', idCurrent != 3 ? 'disable' : '']">Step 3</div>
         </div>
         <div class="simple-form-body">
-            <router-view />
+            <router-view @step="getStep"/>
         </div>
     </div>
 </template>
@@ -20,26 +16,13 @@
 export default {
     data() {
         return {
-            id: 0,
-            dataSte1: [],
-            dataSte2: []
+            idCurrent: 1,
+            idPrev: 0,
         }
     },
     methods: {
-        next() {
-            // @step="getStep(id, data)"
-            if ( this.id == 1) {
-                this.$router.push({ name: 'step2', params: {step1: this.post} })
-            }else if ( this.id == 2) {
-                this.$router.push({ name: 'step3', params: {step1: this.post} })
-            }
-        },
-        getStep(id, data) {
-            if ( id == 1 ) {
-                this.dataSte1 = data
-            } else if( id == 2 ) {
-                this.dataSte2 = data
-            }
+        getStep(id) {
+            this.idCurrent = id
         }
     }
 }

@@ -58,3 +58,20 @@ table tr {
 table tr td:first-child {
     width: 200px;
 }
+
+.disable {
+    color: #ccc
+}
+
+.active {
+    color: #10c18a;
+    border-bottom: 1px solid;
+}
+
+.success {
+    background: #10c18a;
+    color: #fff;
+    width: 50%;
+    margin: 10px auto;
+    padding: 5px;
+}

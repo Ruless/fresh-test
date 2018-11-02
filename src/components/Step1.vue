@@ -86,7 +86,7 @@ export default {
         },
         nextStep() {
             if ( this.validation() ) {
-                // this.$emit('step', 1, this.post)
+                this.$emit('step', 2)
                 localStorage.setItem('step1', JSON.stringify(this.post))
                 this.$router.push({ name: 'step2' });
             }
