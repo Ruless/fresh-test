@@ -56,6 +56,12 @@ export default {
     },
     methods: {
         validation() {
+            let age = 0
+            if ( this.post.idTetxt != '' ) {
+                var unix_timestamp = (this.post.idTetxt.substring(0, 5)  - 25568) * 86400;
+                var date = new Date(unix_timestamp * 1000);
+                age = new Date().getFullYear() -  date.getFullYear()
+            }
 
             if ( this.post.idTetxt == '' || this.post.surname == '' || this.post.name == '' || this.post.city == '') {
 
@@ -76,6 +82,13 @@ export default {
                 this.$notify({
                     type: 'error',
                     text: "Поле ИНН должны содержать только числа!",
+                    duration: 3000
+                });
+				return false
+            } else if ( age <= 21 ) {
+                this.$notify({
+                    type: 'error',
+                    text: "Вы должны быть старше 21 года!",
                     duration: 3000
                 });
 				return false
