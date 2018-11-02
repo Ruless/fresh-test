@@ -14,6 +14,7 @@ const router = new Router({
             children: [
                 {
                     path: '',
+                    name: 'step1',
                     component: () => import('./components/Step1.vue'),
                 },
                 {

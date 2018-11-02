@@ -30,6 +30,7 @@
                 </li>
             </ul>
         </div>
+        <div class="btn btn-back" @click="prevStep"> Назад </div>
         <div class="btn" @click="nextStep"> Далее </div>
     </div>
 </template>
@@ -92,9 +93,15 @@ export default {
             this.post.city = result;
             this.isOpen = false;
         },
+        prevStep() {
+            if ( this.validation() ) {
+                this.$router.push({ name: 'step1' });
+            }
+        },
         nextStep() {
             if ( this.validation() ) {
-                this.$router.push({ name: 'step3', params: {step1: this.step1, step2: this.post} });
+                localStorage.setItem('step2', JSON.stringify(this.post))
+                this.$router.push({ name: 'step3' });
             }
         },
         clickOutside(evt) {
@@ -104,6 +111,14 @@ export default {
         }
     },
     created() {
+        if ( localStorage.getItem('step2') ) {
+            let data = JSON.parse( localStorage.step2 )
+            this.post.idTetxt = data.idTetxt
+            this.post.surname = data.surname
+            this.post.name = data.name
+            this.post.city = data.city
+        }
+
         axios.get('https://api.hh.ru/areas/5').then( (response) => {
             response.data.areas.forEach( (element) => {
                 element.areas.forEach( (item) => {

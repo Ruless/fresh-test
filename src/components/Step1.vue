@@ -31,7 +31,7 @@ export default {
 
             if ( this.post.suma == '' || this.post.term == '') {
                 
-                                this.$notify({
+                this.$notify({
                     type: 'error',
                     text: "Поля не должны быть пустыми!",
                     duration: 3000
@@ -86,9 +86,17 @@ export default {
         },
         nextStep() {
             if ( this.validation() ) {
-                console.log(" is valid ")
-                this.$router.push({ name: 'step2', params: {step1: this.post} });
+                // this.$emit('step', 1, this.post)
+                localStorage.setItem('step1', JSON.stringify(this.post))
+                this.$router.push({ name: 'step2' });
             }
+        }
+    },
+    created() {
+        if ( localStorage.getItem('step1') ) {
+            let data = JSON.parse( localStorage.step1 )
+            this.post.suma = data.suma
+            this.post.term = data.term
         }
     }
 }
