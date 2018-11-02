@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{ step1 }}
         <div class="form-grp">
             <label>ИНН</label>
             <input type="text" v-model="post.idTetxt" @blur="validation">
