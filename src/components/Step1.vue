@@ -2,11 +2,11 @@
     <div> 
         <div class="form-grp">
             <label>Сумма</label>
-            <input type="text" v-model="post.suma" >
+            <input type="text" v-model="post.suma" @blur="validation">
         </div>
         <div class="form-grp">
             <label>Срок</label>
-            <input type="text" v-model="post.term" >
+            <input type="text" v-model="post.term" @blur="validation" >
         </div>
         
         <div class="btn" @click="nextStep"> Далее </div>
@@ -93,6 +93,7 @@ export default {
         }
     },
     created() {
+        this.$emit('step', 1)
         if ( localStorage.getItem('step1') ) {
             let data = JSON.parse( localStorage.step1 )
             this.post.suma = data.suma

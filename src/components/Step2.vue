@@ -3,19 +3,19 @@
         {{ step1 }}
         <div class="form-grp">
             <label>ИНН</label>
-            <input type="text" v-model="post.idTetxt" >
+            <input type="text" v-model="post.idTetxt" @blur="validation">
         </div>
         <div class="form-grp">
             <label>Фамилия</label>
-            <input type="text" v-model="post.surname" >
+            <input type="text" v-model="post.surname" @blur="validation">
         </div>
         <div class="form-grp">
             <label>Имя</label>
-            <input type="text" v-model="post.name" >
+            <input type="text" v-model="post.name" @blur="validation">
         </div>
         <div class="form-grp">
             <label>Город</label>
-            <input type="text" v-model="post.city" @input="autocomplite">
+            <input type="text" v-model="post.city" @input="autocomplite" @blur="validation">
             <ul
                 v-show="isOpen"
                 class="autocomplete-results"
@@ -120,6 +120,8 @@ export default {
             this.post.name = data.name
             this.post.city = data.city
         }
+        
+        this.$emit('step', 2)
 
         axios.get('https://api.hh.ru/areas/5').then( (response) => {
             response.data.areas.forEach( (element) => {

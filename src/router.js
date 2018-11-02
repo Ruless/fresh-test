@@ -31,6 +31,10 @@ const router = new Router({
                 }
             ]
         },
+        {
+        path: '*',
+        component: () => import('./components/Step1.vue')
+        }
     ]
 
     })

@@ -1,5 +1,9 @@
 <template>
-    <div>
+    <div v-if="dataIsEmpty">
+        <div class="error-my">Перейдите на предыдущие шаги и заполните форму</div>
+        <div class="btn btn-back" @click="prevStep"> Назад </div>
+    </div>
+    <div v-else>
         <table>
             <th>Step1</th>
             <tr>
@@ -48,7 +52,8 @@ export default {
             dataStep1: [],
             dataStep2: [],
             load: false,
-            success: false
+            success: false,
+            dataIsEmpty: false
         }
     },
     methods: {
@@ -74,8 +79,13 @@ export default {
         }
     },
     created() {
-        this.dataStep1 = JSON.parse( localStorage.step1 )
-        this.dataStep2 = JSON.parse( localStorage.step2 )
+        this.$emit('step', 3)
+        if ( !localStorage.step1 || !localStorage.step2) {
+            this.dataIsEmpty = true
+        } else {
+            this.dataStep1 = JSON.parse( localStorage.step1 )
+            this.dataStep2 = JSON.parse( localStorage.step2 )
+        }
     }
 }
 </script>
