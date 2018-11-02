@@ -55,6 +55,9 @@ export default {
         }
     },
     methods: {
+        checkSpace(value) {
+            return value.replace(/[\s]+/g, '')
+        },
         validation() {
             let age = 0
             if ( this.post.idTetxt != '' ) {
@@ -62,8 +65,15 @@ export default {
                 var date = new Date(unix_timestamp * 1000);
                 age = new Date().getFullYear() -  date.getFullYear()
             }
-
-            if ( this.post.idTetxt == '' || this.post.surname == '' || this.post.name == '' || this.post.city == '') {
+            if (this.post.idTetxt.split(' ').length-1 ) {
+                this.$notify({
+                    type: 'error',
+                    text: "Поле ИНН не должно содержать пробелов!",
+                    duration: 3000
+                });
+                return false
+                
+            } else if (  this.post.idTetxt == '' || this.checkSpace(this.post.surname) == '' || this.checkSpace(this.post.name) == '' || this.checkSpace(this.post.city) == '' ) {
 
                 this.$notify({
                     type: 'error',
