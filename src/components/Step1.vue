@@ -14,6 +14,7 @@
 </template>
 
 <script>
+let file = require('../assets/data/step1.json');
 
 
 export default {
@@ -95,9 +96,9 @@ export default {
     created() {
         this.$emit('step', 1)
         if ( localStorage.getItem('step1') ) {
-            let data = JSON.parse( localStorage.step1 )
-            this.post.suma = data.suma
-            this.post.term = data.term
+            this.post = JSON.parse( localStorage.step1 )
+        } else {
+            this.post = JSON.parse( JSON.stringify( file ) )
         }
     }
 }

@@ -37,6 +37,7 @@
 
 <script>
 import axios from 'axios'
+let file = require('../assets/data/step2.json');
 
 export default {
     props: ['step1'],
@@ -114,11 +115,9 @@ export default {
     },
     created() {
         if ( localStorage.getItem('step2') ) {
-            let data = JSON.parse( localStorage.step2 )
-            this.post.idTetxt = data.idTetxt
-            this.post.surname = data.surname
-            this.post.name = data.name
-            this.post.city = data.city
+            this.post = JSON.parse( localStorage.step2 )
+        } else {
+            this.post = JSON.parse( JSON.stringify(file) )
         }
         
         this.$emit('step', 2)
